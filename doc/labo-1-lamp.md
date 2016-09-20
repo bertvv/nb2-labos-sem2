@@ -16,6 +16,7 @@
 
 ## Studiemateriaal en referenties
 
+- Galuschka, C. (2014) "Setting up an SSL secured Webserver with CentOS". Opgehaald op 2016-09-20 van <https://wiki.centos.org/HowTos/Https>
 - Hradílek, et al. (2015) "Chapter 11. Web Servers." In *RedHat 7 System Administrator's Guide.* RedHat, Inc. Opgehaald op 2015-09-21 van <https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/>
 - Van Vreckem, B. (2015) *Automating `mysql_secure_installation`*. Opgehaald op 2016-03-22 van <https://bertvv.github.io/notes-to-self/2015/11/16/automating-mysql_secure_installation/>
 
@@ -23,7 +24,7 @@
 
 Een website is vaak het uithangbord voor een bedrijf. Dat is dan ook de eerste service die we voor ons op te zetten netwerk gaan aanpakken. Zet dus een Apache webserver op met een LAMP-stack (= Linux, Apache, MariaDB, PHP) en een CMS-platform. In dit labo gaan we voor Wordpress.
 
-De webserver ondersteunt ook HTTPS. SELinux is geactiveerd en de firewall is correct ingesteld (enkel webverkeer en SSH kan door).
+De webserver ondersteunt ook HTTPS (Galuschka, 2014). SELinux is geactiveerd en de firewall is correct ingesteld (enkel webverkeer en SSH kan door).
 
 We gaan de installatie zoveel mogelijk automatiseren met Vagrant en een Bash provisioning-script. Probeer in het script zo ver mogelijk te gaan. Als er nog manuele handelingen nodig zijn om de installatie af te werken, dan documenteer je die gedetailleerd in je labo-verslag.
 
