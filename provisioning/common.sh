@@ -22,6 +22,16 @@ set -o pipefail
 export readonly ADMIN_USER=bert
 
 #------------------------------------------------------------------------------
+# Ensure machine id is created
+#------------------------------------------------------------------------------
+# Journald needs the file /etc/machine-id in order to work. This checks if that
+# file exists, and initialises it if necessary
+if [ ! -f /etc/machine-id ]; then
+  info 'Generating machine ID'
+  systemd-machine-id-setup
+fi
+
+#------------------------------------------------------------------------------
 # Package installation
 #------------------------------------------------------------------------------
 # TODO: install packages required on all servers
