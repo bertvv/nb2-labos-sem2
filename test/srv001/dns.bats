@@ -38,7 +38,11 @@ assert_alias_lookup() {
   local ip="$3"
   local result="$(dig @${sut_ip} ${alias}.${domain} +short)"
 
-  echo ${result} | grep "${name}\.${domain}\."
+  echo "expected: ${name}"
+  echo "        : ${ip}"
+  echo "result  : ${result}"
+
+  echo ${result} | grep "${name}"
   echo ${result} | grep "${ip}"
 }
 
@@ -77,62 +81,33 @@ assert_mx_lookup() {
 }
 
 @test 'The main config file should be syntactically correct' {
-  named-checkconf /etc/named.conf
-}
-
-@test 'The forward zone file should be syntactically correct' {
-  # It is assumed that the name of the zone file is the name of the zone
-  # itself (without extra extension)
-  named-checkzone ${domain} /var/named/${domain}
-}
-
-@test 'The reverse zone files should be syntactically correct' {
-  # It is assumed that the name of the zone file is the name of the zone
-  # itself (without extra extension)
-  for zone_file in /var/named/*.in-addr.arpa; do
-    reverse_zone=${zone_file##*/}
-    named-checkzone ${reverse_zone} ${zone_file}
-  done
+  dnsmasq --test --conf-file=/etc/dnsmasq.conf
 }
 
 @test 'The service should be running' {
-  systemctl status named
+  systemctl status dnsmasq
 }
 
 @test 'Forward lookups' {
   #                     host name  IP
   assert_forward_lookup srv001     192.168.15.2
   assert_forward_lookup srv002     192.168.15.3
-  assert_forward_lookup srv003     192.168.15.4
   assert_forward_lookup srv010     192.168.15.10
   assert_forward_lookup srv011     192.168.15.11
-  assert_forward_lookup srv012     192.168.15.12
 }
 
 @test 'Reverse lookups' {
   #                     host name  IP
   assert_reverse_lookup srv001     192.168.15.2
   assert_reverse_lookup srv002     192.168.15.3
-  assert_reverse_lookup srv003     192.168.15.4
   assert_reverse_lookup srv010     192.168.15.10
   assert_reverse_lookup srv011     192.168.15.11
-  assert_reverse_lookup srv012     192.168.15.12
 }
 
 @test 'Alias lookups' {
   #                   alias      hostname  IP
-  assert_alias_lookup ns1        srv001     192.168.15.2
-  assert_alias_lookup ns2        srv002     192.168.15.3
-  assert_alias_lookup mail       srv003     192.168.15.4
+  assert_alias_lookup ns         srv001     192.168.15.2
+  assert_alias_lookup dhcp       srv002     192.168.15.3
   assert_alias_lookup www        srv010     192.168.15.10
   assert_alias_lookup file       srv011     192.168.15.11
-  assert_alias_lookup dhcp       srv012     192.168.15.12
-}
-
-@test 'NS record lookup' {
-  assert_ns_lookup srv001 srv002
-}
-
-@test 'Mail server lookup' {
-  assert_mx_lookup 10 srv003
 }
