@@ -17,7 +17,7 @@
 ## Studiemateriaal en referenties
 
 - Galuschka, C. (2014) "Setting up an SSL secured Webserver with CentOS". Opgehaald op 2016-09-20 van <https://wiki.centos.org/HowTos/Https>
-- Hradílek, et al. (2015) "Chapter 11. Web Servers." In *RedHat 7 System Administrator's Guide.* RedHat, Inc. Opgehaald op 2015-09-21 van <https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/>
+- Svistunov, M., et al. (2016) "Chapter 11. Web Servers." In *RedHat 7 System Administrator's Guide.* RedHat, Inc. Opgehaald op 2015-09-21 van <https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/>
 - Van Vreckem, B. (2015) *Automating `mysql_secure_installation`*. Opgehaald op 2016-03-22 van <https://bertvv.github.io/notes-to-self/2015/11/16/automating-mysql_secure_installation/>
 
 ## Opdrachtomschrijving
@@ -62,14 +62,14 @@ Zorg dat volgende deliverables op Github geregistreerd zijn en aangeduid met tag
 
 Om de score in de rechterkolom te halen, moet je **alle** taken tot en met de overeenkomstige lijn realiseren.
 
-| Taak                                                             | Score      |
-| :---                                                             | :---       |
-| Alle code zit in de Github repository, aangeduid met tag `labo1` |            |
-| Het labo-verslag is aanwezig en volledig                         |            |
-| Mondeling toegelicht/demo gegeven aan de lector                      |            |
-| `vagrant up` $\Rightarrow$ werkende VM met Apache+PHP en MariaDB | voldoende  |
-| Firewall- en SELinux-instellingen zijn correct                   |            |
-| `vagrant up` $\Rightarrow$ MySQL mét een DB voor de app          | goed       |
-| HTTPS-ondersteuning met self-signed certificate                  | zeer goed  |
-| `vagrant up` $\Rightarrow$ Wordpress installatiepagina zichtbaar | uitstekend |
-| Basisbeveiliging MariaDB                                         | uitmuntend |
+| Taak                                                             | Score     |
+| :---                                                             | :---      |
+| Alle code zit in de Github repository, aangeduid met tag `labo1` |           |
+| Het labo-verslag is aanwezig en volledig                         |           |
+| Mondeling toegelicht/demo gegeven aan de lector                  |           |
+| `vagrant up` $\Rightarrow$ werkende VM met Apache+PHP en MariaDB | bekwaam   |
+| Firewall- en SELinux-instellingen zijn correct                   |           |
+| `vagrant up` $\Rightarrow$ MySQL mét een DB voor de app          | gevorderd |
+| HTTPS-ondersteuning met self-signed certificate                  |           |
+| `vagrant up` $\Rightarrow$ Wordpress installatiepagina zichtbaar | deskundig |
+| Basisbeveiliging MariaDB                                         |           |
