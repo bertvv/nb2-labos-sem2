@@ -28,39 +28,57 @@ Als je werkt met je eigen laptop, Installeer dan de nodige software, meer bepaal
 - [Vagrant](http://vagrantup.com/) is de tool die het opzetten van VMs automatiseert. Het is een command-line tool die VirtualBox (of een ander virtualisatieplatform) aanstuurt.
 - [Git](http://git-scm.com/download/win), incl. de Bash shell "Git Bash". Je kan eventueel ook een grafische Git client installeren, bv. [Sourcetree](http://www.sourcetreeapp.com/) of [Github Desktop](https://desktop.github.com/).
 
-In deze opgave (en alle volgende) verwijzen we naar de pc waarop je werkt als het "hostsysteem" en de servers die we opzetten als de virtuele machine of VM, of "guest"s.
+In deze opgave (en alle volgende) verwijzen we naar de pc waarop je werkt als het "hostsysteem" en de servers die we opzetten als de virtuele machine of VM.
 
 ## Versiebeheer
 
 We gaan de volledige schriftelijke neerslag van de labo-taken bijhouden in een *versiebeheersysteem*. Dat omvat alle scripts en de exacte configuratie van de opgezette systemen, maar ook je documentatie, zoals procedures, "cheat sheets" en "checklists", enz. Op het einde van het semester moet je aan de hand hiervan in principe het gehele op te zetten netwerk kunnen reconstrueren zonder manuele tussenkomst.
 
 1. Maak een account aan (als je dit nog niet hebt) op Github. Je kan het inloggen met gebruikersnaam en wachtwoord vereenvoudigen door een [SSH-sleutelpaar](https://help.github.com/articles/generating-an-ssh-key/) aan te maken. Maak zo'n sleutelpaar aan in Git Bash (voor je gemak: zonder passphrase) en registreer de publieke sleutel bij Github.
-2. Ga naar de Github classroom (URL via Chamilo gepubliceerd)
-3. Maak lokaal in een directory die je voorbehoudt voor al wat met deze cursus te maken heeft een kloon van je repository. Als je geen ssh-sleutelpaar hebt, gebeurt dat met commando
+2. Ga naar de Github classroom (URL via Chamilo gepubliceerd) en klik door op "Accept this assignment". Je kan daarna doorklikken naar een repository die enkel voor jou toegankelijk is, waar startcode en de informatie over de opgaven gepubliceerd zijn.
+3. Maak lokaal in een directory die je voorbehoudt voor al wat met deze cursus te maken heeft een kloon van je repository. Dat kan via de groene knop rechts met "Clone or Download". Kopieer daar de "URL" naar je repository. Kies "Use SSH". In Git Bash ga je naar de directory waarbinnen je al je materiaal in verband met deze cursus wil bijhouden en voert volgend commando uit:
 
     ```Bash
-    $ git clone --config core.autocrlf=input https://github.org/GEBRUIKERSNAAM/nb2-labos-linux.git
+    $ git clone --config core.autocrlf=input git@github.org:cvopantarhei/nb2linux-GEBRUIKERSNAAM.git
     ```
 
-    Indien je correct een ssh-sleutelpaar hebt aangemaakt, vervang je de url "https:..." door `git@github.org:GEBRUIKERSNAAM/nb2-labos-linux.git`. Je kan de naam van de lokale directory wijzigen en verplaatsen zonder de link naar Github kwijt te spelen. Dit is (een deel van) de resulterende directorystructuur:
+    Je kan de naam van de lokale directory wijzigen en verplaatsen zonder de link naar Github kwijt te spelen. Dit is (een deel van) de resulterende directorystructuur:
 
     ```
     $ tree
     .
     ├── doc
     │   ├── cheat-sheet.md
-    │   └── laboverslag-sjabloon.md
+    │   ├── labo-0-werkomgeving.md
+    │   ├── labo-1-lamp.md
+    │   ├── labo-2-bind.md
+    │   ├── labo-3-samba.md
+    │   └── labo-4-dhcp-router.md
     ├── provisioning
     │   ├── common.sh
-    │   └── srv010.sh
+    │   ├── files
+    │   │   └── srv010
+    │   │       └── test
+    │   ├── router.sh
+    │   ├── srv010.sh
+    │   └── util.sh
     ├── README.md
     ├── test
     │   ├── common.bats
-    │   └── runbats.sh
+    │   ├── runbats.sh
+    │   ├── srv001
+    │   │   └── masterdns.bats
+    │   ├── srv002
+    │   │   └── slavedns.bats
+    │   ├── srv010
+    │   │   └── lamp.bats
+    │   └── srv011
+    │       └── samba.bats
     ├── Vagrantfile
-    └── vagrant_hosts.yml
-
-    4 directories, 10 files
+    ├── vagrant-hosts.yml
+    └── verslag
+        ├── laboverslag-sjabloon.md
+        └── whoami.md
     ```
 
 4. Basisconfiguratie Git op eigen pc: voer volgende commando's uit in een (Git) Bash terminal (gebruik zelfde emailadres als voor je Github-account):
@@ -82,7 +100,7 @@ We gaan de volledige schriftelijke neerslag van de labo-taken bijhouden in een *
 
     Het is aan te raden om je repository *niet* op de klaspc's te laten staan op het einde van de les. Werk eventueel vanop een USB-stick.
 
-5. Bekijk de inhoud van de directory `doc/` (de andere komen later aan bod). Daar vind je een aantal bestanden in [Markdown](http://daringfireball.net/projects/markdown/)-formaat.
+5. Bekijk de inhoud van de directory `verslag/` (de andere komen later aan bod). Daar vind je een aantal bestanden in [Markdown](http://daringfireball.net/projects/markdown/)-formaat.
     - Het bestand `cheat-sheet.md` dient om in de loop van het semester nuttige commando's en troubleshooting checklists bij te houden. Zie <https://github.com/bertvv/cheat-sheets> voor enkele voorbeelden.
     - `laboverslag-sjabloon.md` is de basis van je laboverslagen.
     - In het bestand `whoami.md` wordt gevraagd jezelf voor te stellen
@@ -191,24 +209,17 @@ Om je op weg te helpen, geven we bij dit labo een aanzet voor het tesplan, maar 
 
 Om de score in de rechterkolom te halen, moet je **alle** taken tot en met de overeenkomstige lijn realiseren.
 
-| Taak                                                         | Score      |
-| :---                                                         | :---       |
-| De gevraagde software is geïnstalleerd                       |            |
-| Github account en repository is aangemaakt                   |            |
-| De lector heeft toegang tot je Git repository                |            |
-| Labo-verslag is aanwezig in je Git repository en is volledig |            |
-| Alle documentatie ivm dit labo zit in Github                 |            |
-| Alle specs van de VM (zie hoger) zijn gerealiseerd           | voldoende  |
-| Er is geen wachtwoord nodig voor inloggen op de VM           | goed       |
-| Er is geen wachtwoord nodig voor `git push`                  | zeer goed  |
-| Alle taken uitgevoerd vóór afloop van de 1e les              | uitmuntend |
+| Taak                                                         | Score     |
+| :---                                                         | :---      |
+| De gevraagde software is geïnstalleerd                       |           |
+| Github account en repository is aangemaakt                   |           |
+| De lector heeft toegang tot je Git repository                |           |
+| Labo-verslag is aanwezig in je Git repository en is volledig |           |
+| Alle documentatie ivm dit labo zit in Github                 |           |
+| Alle specs van de VM (zie hoger) zijn gerealiseerd           | bekwaam   |
+| Er is geen wachtwoord nodig voor inloggen op de VM met ssh   |           |
+| Er is geen wachtwoord nodig voor `git push`                  | gevorderd |
+| Alle taken uitgevoerd vóór afloop van de 1e les              | deskundig |
 
 Het aantonen van de specificaties gebeurt aan de hand van een demo aan de lector waar je alle stappen van het testplan doorloopt.
-
-**Extra's:**
-
-Je kan een verhoging van je score bekomen (mits die al minstens voldoende was) door verder te gaan dan het utivoeren van de hierboven opgelegde specificaties. Enkele mogelijkheden worden hieronder opgesomd. Alles dient volledig automatisch te gebeuren, d.w.z. na `vagrant up` of `vagrant provision` zijn deze wijzigingen aangebracht.
-
-- Installeer bij provisioning voor je eigen gebruiker een `.bashrc` script met aliassen voor vaak gebruikte commando's (bv. aangepaste `git log`, "shortcut" voor het uitvoeren van het testscript), een zelf ingestelde prompt met kleuren, enz. Zie <https://github.com/bertvv/dotfiles> voor een uitgebreid voorbeeld.
-- Pas de [instellingen voor de editor Nano](http://www.if-not-true-then-false.com/2009/tuning-nano-text-editor-with-nanorc/) aan. Zorg er voor dat in Nano syntax-colouring aan staat. Voor sommige bestandsformaten is er in de standaardinstallatie geen ondersteuning van de sytax-colouring. Je kan die ook installeren, bijvoorbeeld downloaden van <https://github.com/nanorc/nanorc>.
 
