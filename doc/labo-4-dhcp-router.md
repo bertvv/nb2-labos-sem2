@@ -39,8 +39,6 @@ In `vagrant_hosts`:
 
 De router past Network Address Translation toe op alle netwerkverkeer van hosts op het LAN naar buiten.
 
-De router doet ook dienst als [*caching name server*](http://www.zytrax.com/books/dns/ch4/#caching) voor alle werkstations in het netwerk. Dat betekent dat hij niet zelf zonebestanden bijhoudt, maar alle DNS-requests die binnenkomen doorverwijst naar de juiste bron. Voor het domein linuxlab.lan wordt dat de DNS-server die je al opgezet hebt (`srv001`), alle andere worden doorgestuurd naar de DNS-server van het NAT-netwerk waar de router op is aangesloten.
-
 Het provisioning-script ziet er totaal anders uit dan die voor andere hosts, daarom wordt er een sjabloon meegeleverd met deze opgave. Dit dient nog enkel aangevuld te worden met de commando's voor het configureren zoals hierboven aangegeven.
 
 ### DHCP-server
@@ -81,19 +79,19 @@ Zorg dat volgende deliverables op Github geregistreerd zijn en aangeduid met tag
     * Toelichting van de gekozen aanpak: hoe heb je de requirements gerealiseerd?
     * Testplan en -rapport: hoe toon je aan dat de specificaties, zoals hierboven omschreven, ook gerealiseerd zijn?
     * Gebruikte bronnen voor het uitwerken van de opdracht (naast deze uit de referentielijst)
-* Uitgewerkt installatiescript `provisioning/srv012.sh` en `provisioning/router.sh`, en bijhorende configuratiebestanden
+* Uitgewerkt installatiescript `provisioning/srv002.sh` en `provisioning/router.sh`, en bijhorende configuratiebestanden
 * Demo met toelichting aan de hand van je testplan
 
 Om de score in de rechterkolom te halen, moet je **alle** taken tot en met de overeenkomstige lijn realiseren.
 
-| Taak                                                             | Score      |
-| :---                                                             | :---       |
-| Alle code zit in de Github repository, aangeduid met tag `labo4` |            |
-| Het labo-verslag is aanwezig en volledig                         |            |
-| Mondeling toegelicht/demo gegeven aan de lector                  |            |
-| `vagrant up srv012` -> werkende DHCP-server                      | voldoende  |
-| Werkstation krijgt IP (gereserveerd voor MAC), gateway, DNS      | goed       |
-| `vagrant up router` -> werkende router met NAT en DNS forwarding | zeer goed  |
-| Werkstation kan Internet bereiken                                | uitstekend |
-| Werkstation kan interne services bereiken (website + fileserver) | uitmuntend |
+| Taak                                                             | Score     |
+| :---                                                             | :---      |
+| Alle code zit in de Github repository, aangeduid met tag `labo4` |           |
+| Het labo-verslag is aanwezig en volledig                         |           |
+| Mondeling toegelicht/demo gegeven aan de lector                  |           |
+| `vagrant up srv002` -> werkende DHCP-server                      |           |
+| Werkstation krijgt IP (gereserveerd voor MAC), gateway, DNS      |           |
+| `vagrant up router` -> werkende router met NAT                   | bekwaam   |
+| Werkstation kan interne services bereiken (website + fileserver) | gevorderd |
+| Werkstation kan Internet bereiken                                | deskundig |
 
