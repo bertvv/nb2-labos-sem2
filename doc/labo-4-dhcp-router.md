@@ -27,11 +27,7 @@ Voor de router gebruiken we een gespecialiseerde Linux-distributie: [VyOS](http:
 | `eth0`    | NAT          | 10.0.2.15 (DHCP) | WAN link    |
 | `eth1`    | Host-only    | 192.168.15.254   | LAN link    |
 
-Voor het aanmaken van een VyOS-VM met Vagrant moet je eerst een plugin installeren: `vagrant plugin install vagrant-vyos`. In de Vagrantfile moet je volgende regel toevoegen binnen het codeblok `config.vm.define`:
-
-```Ruby
-    node.ssh.insert_key = false
-```
+Voor het aanmaken van een VyOS-VM met Vagrant moet je eerst een plugin installeren: `vagrant plugin install vagrant-vyos`.
 
 In `vagrant_hosts`:
 

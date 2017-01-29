@@ -42,9 +42,6 @@ set system ntp server '2.be.pool.ntp.org'
 # Domain Name Service
 #------------------------------------------------------------------------------
 
-# First, reset all existing forwarding rules
-reset dns forwarding all
-
 # TODO: DNS requests for this domain should be forwarded to the master DNS
 # server, all other requests should be forwarded to the DNS server of the NAT
 # network
