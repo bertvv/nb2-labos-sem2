@@ -13,13 +13,13 @@
 
 ## Studiemateriaal en referenties
 
-* Van Vreckem, Bert. (2014) "[Een fileserver opzetten met Samba](https://youtu.be/w2RxBkqQ3ZQ) (videoles).
+* RHEL 7 System Administrator's Guide
+    * Secties 12.1
+* RHEL 7 SELinux User's and Administrator's Guide
+* Van Vreckem, Bert. (2014) "[Een fileserver opzetten met Samba](https://youtu.be/w2RxBkqQ3ZQ) (videoles). Let op: in de video gebruik ik een oudere versie van CentOS. Pas de gebruikte commando's waar nodig aan. De syntax van het configuratiebestand `smb.conf` is wel hetzelfde gebleven.
     * Slides: <http://www.slideshare.net/bertvanvreckem/een-fileserver-opzetten-met-samba>
     * "Walkthrough": <http://wp.me/p2XuZW-2P>
-* Ančincová, Barbora. (2014). ["Red Hat Enterprise Linux 7 SELinux User's and Administrator's Guide"](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/SELinux_Users_and_Administrators_Guide/)
 * Cameron, Thomas (2012). ["SELinux for Mere Mortals"](http://www.youtube.com/watch?v=MxjenQ31b70). 2012 Red Hat Summit.
-* Hradílek, Jaromír, et al. (2014). ["Red Hat Enterprise Linux 7 System Administrator's Guide"](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/)
-    * Secties 12.1
 * Vernooij, J.R.,  Terpstra, J. & Carter, G. (2010). ["The Official Samba 3.5.x HOWTO and Reference Guide"](https://www.samba.org/samba/docs/man/Samba-HOWTO-Collection/)
     * Hst. 38 [The Samba Checklist](https://www.samba.org/samba/docs/man/Samba-HOWTO-Collection/diagnosis.html)
     * Hst. 39 [Analyzing and Solving Samba Problems](https://www.samba.org/samba/docs/man/Samba-HOWTO-Collection/problems.html)
@@ -82,22 +82,11 @@ De makkelijkste manier om gebruikersrechten per share te organiseren is om voor 
 
 ### Gebruikers en wachtwoorden
 
-Als je een gebruiker toegang wil geven tot een Samba-share, dan moet die ook bestaan als gebruiker op het systeem. Of concreet: de gebruiker moet voorkomen in `/etc/passwd`. Wachtwoorden voor Samba worden echter afzonderlijk beheerd van de systeemwachtwoorden. Als het niet de bedoeling is dat deze gebruikers ook shelltoegang hebben, dan kan je de accounts blokkeren en hen geen Linux-wachtwoord toekennen, maar wél één voor Samba. Het commando voor het instellen van een Samba-wachtwoord is `smbpasswd`. Dit commando is interactief en dus op zich niet geschikt voor gebruik in een shellscript. Het onderstaande stukje code omzeilt dit probleem:
+Als je een gebruiker toegang wil geven tot een Samba-share, dan moet die ook bestaan als gebruiker op het systeem. Of concreet: de gebruiker moet voorkomen in `/etc/passwd`. Wachtwoorden voor Samba worden echter afzonderlijk beheerd van de systeemwachtwoorden. Als het niet de bedoeling is dat deze gebruikers ook shelltoegang hebben, dan kan je de accounts blokkeren en hen geen Linux-wachtwoord toekennen, maar wél één voor Samba. Het commando voor het instellen van een Samba-wachtwoord is `smbpasswd`. Dit commando is interactief en dus op zich niet geschikt voor gebruik in een shellscript. In het script `provisioning/util.sh` is een functie `set_samba_passwd` gedefinieerd die je kan gebruiken voor het instellen van wachtwoorden:
 
 ```Bash
-## Usage: samba_passwd USERNAME PASSWORD
-## Ensures that the user with the specified name exists
-samba_passwd() {
-  local user="${1}"
-  local password="${2}"
-  echo "##> Create Samba password for user ${user}"
-    (pdbedit -L | grep "${user}" > /dev/null 2>&1 ) \
-      || (echo "${password}"; echo "${password}") \
-      | smbpasswd -s -a "${user}"
-}
+set_samba_passwd GEBRUIKER WACHTWOORD
 ```
-
-Je kan deze code in het begin van je provisioning script plaatsen. Het definieert een functie `samba_passwd` die je kan oproepen zoals aangegeven in de commentaarregel. Let op bij kopiëren en plakken dat alle tekens correct zijn (i.h.b. aanhalingstekens).
 
 ### Tips ivm. algemene configuratie
 
@@ -153,6 +142,12 @@ smbclient //files/public -Ulizae%letmein
 smbclient //files/public -U%
 ```
 
+Als je toegang tot de fileserver gekregen hebt vanaf een Windows-hostsysteem en je hebt aangemeld met een gebruikersnaam en wachtwoord, dan blijft Windows die onthouden. Als je wil aanmelden met een ander account, kan je het huidige verwijderen met:
+
+```
+net use \\files /del
+```
+
 ## Evaluatie
 
 Er is zoals gewoonlijk een acceptatietest beschikbaar voor het valideren van deze specificaties. Vergeet niet je eigen gebruikersnaam in het testscript aan te passen!
@@ -168,14 +163,14 @@ Zorg dat volgende deliverables op Github geregistreerd zijn en aangeduid met tag
 
 Om de score in de rechterkolom te halen, moet je **alle** taken tot en met de overeenkomstige lijn realiseren.
 
-| Taak                                                                 | Score      |
-| :---                                                                 | :---       |
-| Alle code zit in de Github repository, aangeduid met tag `labo3`     |            |
-| Het labo-verslag is aanwezig en volledig                             |            |
-| Mondeling toegelicht/demo gegeven aan de lector                      |            |
-| Vagrant up -> werkende Samba server met correcte leestoegang         |            |
-| De service is beschikbaar vanop het hostsysteem via `\\files`        | voldoende  |
-| Gebruikers hebben toegang tot hun home-directory                     | goed       |
-| Schrijftoegang op de shares is correct                               | zeer goed  |
-| Leden van dezelfde groep hebben schrijftoegang tot elkaars bestanden | uitmuntend |
+| Taak                                                                     | Score     |
+| :---                                                                     | :---      |
+| Alle code zit in de Github repository, aangeduid met tag `labo3`         |           |
+| Het labo-verslag is aanwezig en volledig                                 |           |
+| Mondeling toegelicht/demo gegeven aan de lector                          |           |
+| Vagrant up -> werkende Samba server met correcte lees- en schrijftoegang |           |
+| De service is beschikbaar vanop het hostsysteem via `\\192.168.15.11`    | bekwaam   |
+| De service is beschikbaar vanop het hostsysteem via `\\files`            |           |
+| Gebruikers hebben toegang tot hun home-directory                         | gevorderd |
+| Leden van dezelfde groep hebben schrijftoegang tot elkaars bestanden     | deskundig |
 
