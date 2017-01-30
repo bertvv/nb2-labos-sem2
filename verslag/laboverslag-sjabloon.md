@@ -1,14 +1,14 @@
 ## Laboverslag: TITEL
 
-- Naam cursist: NAAM
+- Naam cursist: Bert Van Vreckem
 
 ### Procedures
 
-1. 
+1.
 
 ### Testplan en -rapport
 
-- 
+-
 
 ### Retrospectieve
 
