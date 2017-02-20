@@ -53,4 +53,17 @@ info Installating common packages
 info Setting up admin user account
 ensure_user_exists "${ADMIN_USER}"
 
+info "Setting up passwordless SSH login"
+
+ssh_dir="/home/${ADMIN_USER}/.ssh"
+
+if [ ! -d "${ssh_dir}" ]; then
+  mkdir "${ssh_dir}"
+fi
+chown "${ADMIN_USER}:${ADMIN_USER}" "${ssh_dir}"
+chmod 700 "${ssh_dir}"
+
+cp /vagrant/provisioning/files/authorized_keys "${ssh_dir}"
+chown "${ADMIN_USER}:${ADMIN_USER}" "${ssh_dir}/authorized_keys"
+chmod 600 "${ssh_dir}/authorized_keys"
 
