@@ -37,6 +37,10 @@ fi
 # TODO: install packages required on all servers
 
 info Starting common tasks
+
+info Restarting network interfaces
+systemctl restart network
+
 info Installating common packages
 
 #------------------------------------------------------------------------------
