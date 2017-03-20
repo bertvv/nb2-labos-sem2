@@ -32,8 +32,16 @@ error() {
 # Returns with exit status 0 if the files are identical, a nonzero exit status
 # if they differ
 files_differ() {
-  local -r checksum1=$(md5sum "${1}" | cut -c 1-32)
-  local -r checksum2=$(md5sum "${2}" | cut -c 1-32)
+  local file1="${1}"
+  local file2="${2}"
+
+  # If the second file doesn't exist, it's considered to be different
+  if [ ! -f "${file2}" ]; then
+    return 0
+  fi
+
+  local -r checksum1=$(md5sum "${file1}" | cut -c 1-32)
+  local -r checksum2=$(md5sum "${file2}" | cut -c 1-32)
 
   [ "${checksum1}" != "${checksum2}" ]
 }
@@ -68,6 +76,21 @@ ensure_user_exists() {
   if ! getent passwd "${user}"; then
     info " -> user added"
     useradd "${user}"
+  else
+    info " -> already exists"
+  fi
+}
+
+# Usage: ensure_group_exists GROUPNAME
+#
+# Creates the group with the specified name, if it doesn’t exist
+ensure_group_exists() {
+  local group="${1}"
+
+  info "Ensure group ${group} exists"
+  if ! getent group "${group}"; then
+    info " -> group added"
+    groupadd "${group}"
   else
     info " -> already exists"
   fi
