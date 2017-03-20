@@ -1,0 +1,8 @@
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+192.168.15.2	srv001 ns
+192.168.15.3	srv002 dhcp
+192.168.15.10	srv010 www
+192.168.15.11	srv011 file
+
