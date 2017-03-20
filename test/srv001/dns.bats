@@ -42,7 +42,7 @@ assert_alias_lookup() {
   echo "        : ${ip}"
   echo "result  : ${result}"
 
-  echo ${result} | grep "${name}"
+  #echo ${result} | grep "${name}"
   echo ${result} | grep "${ip}"
 }
 
