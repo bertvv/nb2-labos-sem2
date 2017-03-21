@@ -67,9 +67,9 @@ ensure_sebool()  {
 # User management
 #------------------------------------------------------------------------------
 
-# Usage: create_user USERNAME
+# Usage: ensure_user_exists USERNAME
 #
-# Create the user with the specified name if it doesn’t exist
+# Creates the user with the specified name if it doesn’t exist
 ensure_user_exists() {
   local user="${1}"
   info "Ensure user ${user} exists"
@@ -121,3 +121,35 @@ set_samba_passwd() {
       || (echo "${password}"; echo "${password}") \
       | smbpasswd -s -a "${user}"
 }
+
+#-----------------------------------------------------------------------------
+# Samba
+#-----------------------------------------------------------------------------
+
+# Usage: setup_samba_share SHARE SAMBA_ROOT [MODE [CONTEXT]]
+#
+# Creates a directory for a Samba share, assings a group, and optionally 
+# sets permissions and SELinux context 
+create_samba_share() {
+  share="${1}"
+  root_dir="${2}"
+  mode="${3:-775}"
+  context="${4:-samba_share_t}"
+  share_dir="${root_dir}/${share}"
+
+  info "Setting up share ${share}"
+
+  if [ ! -d "${share_dir}" ]; then
+    info "Creating directory ${share_dir}"
+    mkdir -p "${share_dir}"
+  fi
+
+  ensure_group_exists "${share}"
+
+  info "Setting permissions"
+  chgrp "${share}" "${share_dir}"
+  chmod "${mode}" "${share_dir}"
+  chcon --recursive --type \
+    "${context}" "${share_dir}"
+}
+
