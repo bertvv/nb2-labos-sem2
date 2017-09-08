@@ -25,12 +25,24 @@
 #
 # [1] http://docs.vagrantup.com/v2/synced-folders/basic_usage.html
 ---
+
+# LAMP-stack + wordpress
 - name: srv010
   ip: 192.168.15.10
 
+# DNS
 - name: srv001
   ip: 192.168.15.2
 
+# Samba fileserver
 - name: srv011
   ip: 192.168.15.11
+  
+# DHCP server
+- name: srv012
+  ip: 192.168.15.12
 
+# VyOS router
+- name: router
+  ip: 192.168.15.254
+  box: bertvv/vyos116
